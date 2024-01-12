@@ -49,7 +49,7 @@ public class pdfupload extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pdfupload);
         storageReference = FirebaseStorage.getInstance().getReference();
-        databaseReference = FirebaseDatabase.getInstance().getReference("mydoc");
+        databaseReference = FirebaseDatabase.getInstance().getReference("mydocs");
 
         filetitle = findViewById(R.id.tittle);
         filelogo = findViewById(R.id.filelogo);
@@ -123,7 +123,7 @@ public class pdfupload extends AppCompatActivity {
         }
     }
     public void processupload(Uri filepath){
-        StorageReference  reference = storageReference.child("uploads/"+System.currentTimeMillis()+".pdf");
+        final StorageReference  reference = storageReference.child("uploads/"+System.currentTimeMillis()+".pdf");
         reference.putFile(filepath)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
@@ -149,7 +149,7 @@ public class pdfupload extends AppCompatActivity {
                 .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-                        Toast.makeText(getApplicationContext() , "File uploading" , Toast.LENGTH_LONG).show();
+                        float percent = (100* snapshot.getBytesTransferred())/ snapshot.getTotalByteCount();
 
 
                     }
